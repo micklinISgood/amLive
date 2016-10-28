@@ -14,6 +14,9 @@
 
     function handleError(error) {
         console.log('Cannot get user video', error);
+        var error =document.getElementById('error');
+        $('#error').show();
+        $('#error').html('Cannot access camera.<br/> Please allow the permisson and refresh your page.');
         //change layout here
     }
 
@@ -65,6 +68,9 @@
             recorder.start(1000);
             IsRecord = true;
             recButton.innerHTML = "Stop recording";
+            var fileLocation = 'http://localhost:7000/w/'
+            + fileName + '.webm';
+            console.log(fileLocation);
         }else{
             recorder.stop();
             updateVideoFile();
