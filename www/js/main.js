@@ -68,12 +68,15 @@
             recorder.start(1000);
             IsRecord = true;
             recButton.innerHTML = "Stop recording";
+            $("#record").removeClass("btn-primary").addClass("btn-danger");
             var fileLocation = 'http://localhost:7000/w/'
             + fileName + '.webm';
             console.log(fileLocation);
         }else{
             recorder.stop();
             updateVideoFile();
+            $("#record").removeClass("btn-danger").addClass("btn-primary");
+        
             IsRecord = false;
             recButton.innerHTML = "Start recording";
         }

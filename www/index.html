@@ -4,7 +4,30 @@
         <meta charset="utf-8">
         <title>Am Live</title>
         <link rel="stylesheet" href="/css/main.css" type="text/css" />
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
         <script type="text/javascript" src="/js/jquery.min.js" ></script>
+        <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+        <div class="bs-example">
+            <nav class="navbar navbar-default" role="navigation">
+            <div class="navbar-header">
+            <a class="navbar-brand" href="#" >Live Lecture Streamer</a>
+             </div>
+            <button id="record" type="button" class="btn btn-primary">Start record</button>
+          
+   
+         <!--  <a class="navbar-brand" href="#" onclick="elapseRequest();return false;">Tweets Elapse</a>
+          <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-left">
+                <li><a href="#">Left</a></li>
+                <li><a href="#about">Left</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="#about" id ="curtime" >Right</a></li>
+            </ul>
+          </div> -->
+        </nav>
+        </div> 
     </head>
     <body>
         <div id="error" class="error" style="display: none;"></div>
@@ -15,7 +38,7 @@
         <video id="recorded-video" src="" autoplay>
 
         </video>
-        <button id="record" name="button">Start recording</button>
+       
         
     </body>
     <script type="text/javascript" src="/js/main.js"></script>
