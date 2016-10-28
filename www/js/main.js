@@ -71,10 +71,13 @@
             $("#record").removeClass("btn-primary").addClass("btn-danger");
             var fileLocation = 'http://localhost:7000/w/'
             + fileName + '.webm';
-            console.log(fileLocation);
+            $('#share').show();
+            $('#share').html('Now live on: <br/>'+fileLocation);
+         
         }else{
+            $('#share').hide();
             recorder.stop();
-            updateVideoFile();
+            //updateVideoFile();
             $("#record").removeClass("btn-danger").addClass("btn-primary");
         
             IsRecord = false;
