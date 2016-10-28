@@ -2,7 +2,8 @@
 
 var fs = require('fs');
 var exec = require('child_process').exec;
-var uuid = require('node-uuid');
+var uuid = require('uuid-random');
+var url = require('url');
 var videoFileExtension = '.webm';
 var blobs = [];
 function writeOrAppendData(data, fileName, ws) {
@@ -22,7 +23,8 @@ function writeOrAppendData(data, fileName, ws) {
 
 module.exports = function (app) {
     app.ws('/', function (ws, req) {
-        var fileName = uuid.v1();
+      
+        var fileName = uuid();
         console.log('new connection established');
         ws.on('message', function(data) {
             if (data instanceof Buffer) {
@@ -31,4 +33,5 @@ module.exports = function (app) {
         });
         ws.send(fileName);
     });
+ 
 };

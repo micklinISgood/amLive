@@ -12,6 +12,7 @@
     "express": "4.x",
     "express-ws": "0.2.6",
     "node-uuid": "1.4.3",
+    "url" : "0.11.0 ",
     "uuid-random" : "1.0.5"
   }
 }
