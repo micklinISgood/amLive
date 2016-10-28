@@ -1,7 +1,7 @@
 # amLive
 
 ## run
-1. install npm
+1. [install node](https://nodejs.org/en/download/package-manager/)
 2. npm install
 3. cd server
 4. node index.js
