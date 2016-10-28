@@ -7,18 +7,22 @@
 
     function getVideoStream() {
         var config = { video: true, audio: true };
-        var userstream;
-        navigator.mediaDevices.getUserMedia({
-            audio: true,
-            video: true
-        })
-        .then(function (stream) {
-            mediaStream = stream;
-            document.getElementsByTagName('video')[0].setAttribute('src', window.URL.createObjectURL(mediaStream));
-            getRecorder();
-        }).catch(handleError);
+        navigator.mediaDevices.getUserMedia(config).then(OnSuccess).catch(handleError);
     };
 
+ 
+
+    function handleError(error) {
+        console.log('Cannot get user video', error);
+        //change layout here
+    }
+
+    function OnSuccess(stream) {
+         mediaStream = stream;
+         document.getElementsByTagName('video')[0].setAttribute('src', window.URL.createObjectURL(mediaStream));
+         getRecorder();
+    }
+   
     function getRecorder() {
         var options = {
                 audioBitsPerSecond : 128000,
@@ -29,11 +33,6 @@
         recorder = new MediaRecorder(mediaStream, options);
         recorder.ondataavailable = videoDataHandler;
     };
-
-    function handleError(error) {
-        alert('Cannot get user video', error);
-    }
-
 
     function videoDataHandler(event) {
         var reader = new FileReader();
