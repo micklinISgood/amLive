@@ -7,7 +7,7 @@ var url = require('url');
 var videoFileExtension = '.webm';
 var blobs = [];
 function writeOrAppendData(data, fileName, ws) {
-    var filePath = '../www/uploads/';
+    var filePath = '../www/w/';
     if (!fs.existsSync(filePath)){
         fs.mkdirSync(filePath);
     }
