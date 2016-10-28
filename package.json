@@ -11,6 +11,7 @@
   "dependencies": {
     "express": "4.x",
     "express-ws": "0.2.6",
-    "node-uuid": "1.4.3"
+    "node-uuid": "1.4.3",
+    "uuid-random" : "1.0.5"
   }
 }
