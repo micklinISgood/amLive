@@ -5,7 +5,5 @@
 2. npm install
 3. cd node/server
 4. node index.js
-5. On your browser
-```
-    http://localhost:7000
-```
+5.  Point your browser to: [http://localhost:7000](http://localhost:7000) 
+
