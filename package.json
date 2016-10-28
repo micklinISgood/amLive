@@ -16,6 +16,6 @@
     "uuid-random" : "1.0.5"
   },
   "scripts": {
-    "start": "node node/server/index.js"
+    "start": "node server/index.js"
   }
 }
