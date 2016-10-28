@@ -6,7 +6,10 @@ var uuid = require('node-uuid');
 var videoFileExtension = '.webm';
 var blobs = [];
 function writeOrAppendData(data, fileName, ws) {
-    var filePath = './uploads/';
+    var filePath = '../uploads/';
+    if (!fs.existsSync(filePath)){
+        fs.mkdirSync(filePath);
+    }
     if (!fs.existsSync(filePath + fileName + videoFileExtension)) {
         console.log('writing original file');
         ws.send(fileName);
