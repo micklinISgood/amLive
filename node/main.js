@@ -3,6 +3,7 @@
     var mediaStream;
     var fileName;
     var connection;
+    var IsRecord = false;
 
     function getVideoStream() {
         var config = { video: true, audio: true };
@@ -48,16 +49,20 @@
         video.setAttribute('src', fileLocation);
     };
 
-    var startButton = document.getElementById('record');
-    startButton.addEventListener('click', function (e) {
-        recorder.start(1000);
+    var recButton = document.getElementById('record');
+    recButton.addEventListener('click', function (e) {
+        if(!IsRecord){
+            recorder.start(1000);
+            IsRecord = true;
+            recButton.innerHTML = "Stop recording";
+        }else{
+            recorder.stop();
+            updateVideoFile();
+            IsRecord = false;
+            recButton.innerHTML = "Start recording";
+        }
     });
 
-    var stopButton = document.getElementById('stop');
-    stopButton.addEventListener('click', function (e) {
-        recorder.stop();
-        updateVideoFile();
-    });
 
     getVideoStream();
     getWebSocket();
