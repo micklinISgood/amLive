@@ -25,7 +25,7 @@ appWs.listen(port, function () {
 
 //tell express what to do when the /about route is requested
 appWs.get('/w/*', function(req, res){
-	var pathname = url.parse(req.url).pathname.split("/");
+	var pathname = url.parse(req.url).pathname;
     //console.log("Request file_path " + pathname[2]+ " received.");
     var params = {name:pathname}
     res.render('playback', params);
