@@ -4,6 +4,7 @@
     var fileName;
     var connection;
     var IsRecord = false;
+    var port = 5566;
 
     function getVideoStream() {
         var config = { video: true, audio: true };
@@ -46,7 +47,7 @@
     };
 
     function getWebSocket() {
-        var websocketEndpoint = 'ws://localhost:7000';
+        var websocketEndpoint = 'ws://localhost:' + port;
         connection = new WebSocket(websocketEndpoint);
         connection.binaryType = 'arraybuffer';
         connection.onmessage = function (message) {
@@ -60,7 +61,7 @@
     }
     function updateVideoFile() {
         var video = document.getElementById('recorded-video');
-        var fileLocation = 'http://localhost:7000/w/'
+        var fileLocation = 'http://localhost:' + port + '/w/'
             + fileName + '.webm';
         console.log(fileLocation);
         video.setAttribute('src', fileLocation);
@@ -73,7 +74,8 @@
             IsRecord = true;
             recButton.innerHTML = "Stop recording";
             $("#record").removeClass("btn-primary").addClass("btn-danger");
-            var fileLocation = 'http://localhost:7000/w/'+ fileName;
+
+            var fileLocation = 'http://localhost:' + port + '/w/'+ fileName;
             $('#share').show();
             $('#share').html('<div onclick="openInNewTab(\''+fileLocation+'\');">Now live on: <br/>'+fileLocation+'</div>');
          
