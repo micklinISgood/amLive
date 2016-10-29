@@ -1,0 +1,32 @@
+<!-- views/pages/about.ejs -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lecture Live Streaming!</title>
+  </head>
+  <body>
+    <h1>Lecture Live Streaming!</h1>
+    <div id="timecode">not started</div>
+    <div id="status">not started</div>
+    <video id="watch_video" width="320" height="240" controls="" autoplay="autoplay">
+      <source src="<%= name %>.webm" type="video/webm">
+    </video>
+    <script>
+      var watchVideo = document.getElementById('watch_video');
+      var timeDiv = document.getElementById('timecode');
+      var statusDiv = document.getElementById('status');
+      watchVideo.ontimeupdate = function() {
+         timeDiv.innerHTML = 'time:' + watchVideo.currentTime + ' sec, buffered(' + watchVideo.buffered.start(0) + ' - ' + watchVideo.buffered.end(0) + ')';
+        };
+      watchVideo.onwaiting = function() {
+         statusDiv.innerHTML = 'waiting..';
+        };
+      watchVideo.onplaying = function() {
+         statusDiv.innerHTML = 'playing';
+        };
+      watchVideo.onended = function() {
+         statusDiv.innerHTML = '..end';
+        };
+    </script>
+  </body>
+</html>

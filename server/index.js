@@ -10,7 +10,7 @@ var url = require('url');
 var default_port = 5566
 
 appWs.set('views', path.join(__dirname, 'views'));  
-appWs.set('view engine', 'jade');
+appWs.set('view engine', 'ejs');
 
 appWs.use(express.static('../www/'));
 
