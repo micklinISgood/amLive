@@ -53,7 +53,11 @@
             fileName = message.data;
         }
     };
-
+    function openInNewTab(url) {
+        console.log(url);
+        var win = window.open(url, '_blank');
+        win.focus();
+    }
     function updateVideoFile() {
         var video = document.getElementById('recorded-video');
         var fileLocation = 'http://localhost:7000/w/'
@@ -69,10 +73,9 @@
             IsRecord = true;
             recButton.innerHTML = "Stop recording";
             $("#record").removeClass("btn-primary").addClass("btn-danger");
-            var fileLocation = 'http://localhost:7000/w/'
-            + fileName + '.webm';
+            var fileLocation = 'http://localhost:7000/w/'+ fileName;
             $('#share').show();
-            $('#share').html('Now live on: <br/>'+fileLocation);
+            $('#share').html('<div onclick="openInNewTab(\''+fileLocation+'\');">Now live on: <br/>'+fileLocation+'</div>');
          
         }else{
             $('#share').hide();
@@ -84,7 +87,7 @@
             recButton.innerHTML = "Start recording";
         }
     });
-
+ 
 
     getVideoStream();
     getWebSocket();
