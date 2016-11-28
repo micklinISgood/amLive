@@ -14,20 +14,20 @@ function StoreDataToWebm(data, fileName, ws) {
         fs.mkdirSync(filePath);
     }
     
-    var livePath = filePath+fileName+'/';
+    // var livePath = filePath+fileName+'/';
 
-    if (!fs.existsSync(livePath)){
-        var t_hms = new Date().getTime();
-        fs.mkdirSync(livePath);
-        prevFilePath = livePath + t_hms + videoFileExtension;
-        fs.writeFileSync(prevFilePath, data);
-    }else{
-        //delete previous file
-        fs.unlinkSync(prevFilePath);
-        var t_hms = new Date().getTime();
-        prevFilePath = livePath + t_hms + videoFileExtension;
-        fs.writeFileSync(prevFilePath, data);
-    }
+    // if (!fs.existsSync(livePath)){
+    //     var t_hms = new Date().getTime();
+    //     fs.mkdirSync(livePath);
+    //     prevFilePath = livePath + t_hms + videoFileExtension;
+    //     fs.writeFileSync(prevFilePath, data);
+    // }else{
+    //     //delete previous file
+    //     fs.unlinkSync(prevFilePath);
+    //     var t_hms = new Date().getTime();
+    //     prevFilePath = livePath + t_hms + videoFileExtension;
+    //     fs.writeFileSync(prevFilePath, data);
+    // }
 
     if (!fs.existsSync(filePath + fileName + videoFileExtension)) {
         console.log('writing original file');
@@ -65,6 +65,8 @@ module.exports = function (app) {
         ws.on('message', function(data) {
             if (data instanceof Buffer) {
                 StoreDataToWebm(data, fileName, ws);
+            }else{
+                console.log(data);
             }
         });
         ws.on('close', function(data) {

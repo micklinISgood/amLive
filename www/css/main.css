@@ -4,7 +4,7 @@ body{ font-family: Arial; background: #eaeaea; padding: 5px; }
 .error{ border: 1px red solid; border-radius: 3px; -webkit-border-radius: 3px; padding: 5px; background: #ffebe8; text-align: center; color: #333; font-size: 72px;}
 .error{ font-size: 72px; }
 #record{ margin-top: 10px; margin-bottom: 10px;}
-.share{ border: 1px blue solid; border-radius: 3px; -webkit-border-radius: 3px; padding: 5px; background: #0092ff; text-align: center; color: #fff8dc; font-size: 20px;}
+.share{ border-radius: 3px; -webkit-border-radius: 3px; padding: 5px; background: #0092ff; text-align: center; color: #fff8dc; font-size: 20px;}
 .button{ color: white; border: none; padding: 5px; background: #990000; font-weight: bold; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; cursor: pointer; }
 .button:hover{ background: red; }
 .link1{ text-decoration: none; color: #333; }
@@ -13,7 +13,10 @@ body{ font-family: Arial; background: #eaeaea; padding: 5px; }
 footer{ margin-top: 3px; }
 .link2:hover{ color: red; }
 .input1{ border: 1px solid #ccc; padding: 5px; border-radius: 3px; -webkit-border-radius: 3px; }
-a:hover{ text-decoration: none; }
+a:hover{ color: yellow ; text-decoration: none;}
+a:link { color: white; text-decoration: none;}
+a:visited  { color: white; text-decoration: none;}
+a:active { color: white; text-decoration: none;}
 .download_link{ padding: 5px; text-align: center; }
 .instagram-options{ margin-top: 5px; }
 .media-li{ width: 306px; margin: 0px 10px 10px 0px; float: left; }

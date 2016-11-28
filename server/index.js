@@ -5,7 +5,6 @@ var path = require('path');
 var express = require('express');
 var expressWss = require('express-ws')(express());
 var appWs = expressWss.app;
-// appWs.use('/uploads',express.static('./uploads'));
 var url = require('url');
 var default_port = 5566
 

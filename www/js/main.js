@@ -3,6 +3,7 @@
     var mediaStream;
     var fileName;
     var connection;
+    var fileLocation;
     var IsRecord = false;
     var port = 5566;
 
@@ -52,6 +53,8 @@
         connection.binaryType = 'arraybuffer';
         connection.onmessage = function (message) {
             fileName = message.data;
+            fileLocation = 'http://localhost:' + port + '/w/'+ fileName;
+
         }
     };
     function openInNewTab(url) {
@@ -75,12 +78,11 @@
             recButton.innerHTML = "Stop recording";
             $("#record").removeClass("btn-primary").addClass("btn-danger");
 
-            var fileLocation = 'http://localhost:' + port + '/w/'+ fileName;
             $('#share').show();
-            $('#share').html('<div onclick="openInNewTab(\''+fileLocation+'\');">Now live on: <br/>'+fileLocation+'</div>');
+            $('#share').html('Now live on: <br/><a onclick="window.open(\''+fileLocation+'\');">'+fileLocation+'</a>');
          
         }else{
-            $('#share').hide();
+            $('#share').html('Lived on: <br/><a onclick="window.open(\''+fileLocation+'\');">'+fileLocation+'</a>');
             recorder.stop();
             //updateVideoFile();
             $("#record").removeClass("btn-danger").addClass("btn-primary");
