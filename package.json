@@ -15,7 +15,8 @@
     "url" : "0.11.0 ",
     "uuid-random" : "1.0.5",
     "jade": "",
-    "ejs":"2.5.2"
+    "ejs":"2.5.2",
+    "date-utils":"1.2.21"
 
   },
   "scripts": {

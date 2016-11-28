@@ -4,6 +4,7 @@ var fs = require('fs');
 var exec = require('child_process').exec;
 var uuid = require('uuid-random');
 var url = require('url');
+require('date-utils');
 var videoFileExtension = '.webm';
 var blobs = [];
 function writeOrAppendData(data, fileName, ws) {
@@ -11,6 +12,14 @@ function writeOrAppendData(data, fileName, ws) {
     if (!fs.existsSync(filePath)){
         fs.mkdirSync(filePath);
     }
+    var livePath = filePath+fileName;
+    if (!fs.existsSync(livePath)){
+        var t_hms = new Date().getTime();
+        console.log(t_hms);
+        fs.mkdirSync(livePath);
+
+    }
+
     if (!fs.existsSync(filePath + fileName + videoFileExtension)) {
         console.log('writing original file');
         ws.send(fileName);
