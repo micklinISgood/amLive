@@ -79,10 +79,10 @@
             $("#record").removeClass("btn-primary").addClass("btn-danger");
 
             $('#share').show();
-            $('#share').html('Now live on: <br/><a onclick="window.open(\''+fileLocation+'\');">'+fileLocation+'</a>');
+            $('#share').html('Now live on: <br/><a onclick="window.open(\''+fileLocation+'\');"style="color:#d6d6f5;">'+fileLocation+'</a>');
          
         }else{
-            $('#share').html('Lived on: <br/><a onclick="window.open(\''+fileLocation+'\');">'+fileLocation+'</a>');
+            $('#share').html('Lived on: <br/><a onclick="window.open(\''+fileLocation+'\');" style="color:#d6d6f5;">'+fileLocation+'</a>');
             recorder.stop();
             //updateVideoFile();
             $("#record").removeClass("btn-danger").addClass("btn-primary");
