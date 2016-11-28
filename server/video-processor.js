@@ -7,14 +7,15 @@ var url = require('url');
 require('date-utils');
 var videoFileExtension = '.webm';
 var blobs = [];
+var room = {};
 var prevFilePath = '';
-function StoreDataToWebm(data, fileName, ws) {
+function StoreDataToWebm(data, hashid, ws) {
     var filePath = '../www/w/';
     if (!fs.existsSync(filePath)){
         fs.mkdirSync(filePath);
     }
     
-    // var livePath = filePath+fileName+'/';
+    // var livePath = filePath+hashid+'/';
 
     // if (!fs.existsSync(livePath)){
     //     var t_hms = new Date().getTime();
@@ -29,18 +30,18 @@ function StoreDataToWebm(data, fileName, ws) {
     //     fs.writeFileSync(prevFilePath, data);
     // }
 
-    if (!fs.existsSync(filePath + fileName + videoFileExtension)) {
+    if (!fs.existsSync(filePath + hashid + videoFileExtension)) {
         console.log('writing original file');
-        ws.send(fileName);
-        fs.writeFileSync(filePath + fileName + videoFileExtension, data);
+        ws.send(hashid);
+        fs.writeFileSync(filePath + hashid + videoFileExtension, data);
     } else {
         console.log('appending File')
-        fs.appendFileSync(filePath + fileName + videoFileExtension, data);
+        fs.appendFileSync(filePath + hashid + videoFileExtension, data);
     }
 }
-function deleteRealDir(fileName) {
+function deleteRealDir(hashid) {
     var filePath = '../www/w/';
-    var livePath = filePath+fileName+'/';
+    var livePath = filePath+hashid+'/';
     deleteFolderRecursive(livePath);
 
 }
@@ -60,23 +61,30 @@ var deleteFolderRecursive = function(path) {
 module.exports = function (app) {
     app.ws('/', function (ws, req) {
       
-        var fileName = uuid();
+        var hashid = uuid();
         console.log('new connection established');
         ws.on('message', function(data) {
             if (data instanceof Buffer) {
-                StoreDataToWebm(data, fileName, ws);
+                StoreDataToWebm(data, hashid, ws);
+                if(!room[hashid]){
+                    room[hashid] = [ws];
+                }
             }else{
-                console.log(data);
+               data = JSON.parse(data);
+               if(data["join"] && room[data["join"]]){
+                    room[data["join"]].push(ws);
+               }
             }
+            // console.log(room);
         });
         ws.on('close', function(data) {
             //reload clients' <video> to full video 
             //delete real dir 
             console.log("close");
-            deleteRealDir(fileName);
+            deleteRealDir(hashid);
        
         });
-        ws.send(fileName);
+        ws.send(hashid);
     });
  
 };
