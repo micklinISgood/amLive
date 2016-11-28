@@ -8,12 +8,14 @@ require('date-utils');
 var videoFileExtension = '.webm';
 var blobs = [];
 var prevFilePath = '';
-function writeOrAppendData(data, fileName, ws) {
+function StoreDataToWebm(data, fileName, ws) {
     var filePath = '../www/w/';
     if (!fs.existsSync(filePath)){
         fs.mkdirSync(filePath);
     }
+    
     var livePath = filePath+fileName+'/';
+
     if (!fs.existsSync(livePath)){
         var t_hms = new Date().getTime();
         fs.mkdirSync(livePath);
@@ -36,7 +38,25 @@ function writeOrAppendData(data, fileName, ws) {
         fs.appendFileSync(filePath + fileName + videoFileExtension, data);
     }
 }
+function deleteRealDir(fileName) {
+    var filePath = '../www/w/';
+    var livePath = filePath+fileName+'/';
+    deleteFolderRecursive(livePath);
 
+}
+var deleteFolderRecursive = function(path) {
+  if( fs.existsSync(path) ) {
+    fs.readdirSync(path).forEach(function(file,index){
+      var curPath = path + "/" + file;
+      if(fs.lstatSync(curPath).isDirectory()) { // recurse
+        deleteFolderRecursive(curPath);
+      } else { // delete file
+        fs.unlinkSync(curPath);
+      }
+    });
+    fs.rmdirSync(path);
+  }
+};
 module.exports = function (app) {
     app.ws('/', function (ws, req) {
       
@@ -44,8 +64,15 @@ module.exports = function (app) {
         console.log('new connection established');
         ws.on('message', function(data) {
             if (data instanceof Buffer) {
-                writeOrAppendData(data, fileName, ws);
+                StoreDataToWebm(data, fileName, ws);
             }
+        });
+        ws.on('close', function(data) {
+            //reload clients' <video> to full video 
+            //delete real dir 
+            console.log("close");
+            deleteRealDir(fileName);
+       
         });
         ws.send(fileName);
     });
