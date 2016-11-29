@@ -74,7 +74,7 @@
         }
         connection.onopen = function () {
             
-            recorder.start(1000);
+            recorder.start(250);
 
 
         }
