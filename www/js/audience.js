@@ -36,16 +36,18 @@ Chat.connect = (function(host) {
     		//replace video src here
     		// console.log(action["live"]);
     		var vid = document.getElementById("watch_video");
-    		vid.src =  head+action["live"]+".webm";
-    		console.log(vid.src);
-    		vid.load();
-    		vid.play();
+    		src_location =  head+action["live"]+".webm";
+    		console.log(src_location);
+            vid.setAttribute('src', src_location);
     	}
-    	// var action = JSON.parse(message.data);
-    	 
-    	// console.log(action);
-         
-        //Chat.sendMessage(message.data);
+        if(action["end"]){
+            var vid = document.getElementById("watch_video");
+            var full = head.substring(0,head.length-1);
+            src_location =  full+".webm";
+            console.log(src_location);
+            vid.setAttribute('src', src_location);
+        }
+    
         return false;
     };
 

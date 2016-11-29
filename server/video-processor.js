@@ -6,7 +6,7 @@ var uuid = require('uuid-random');
 var url = require('url');
 require('date-utils');
 var videoFileExtension = '.webm';
-var blobs = [];
+var host = [];
 var room = {};
 var prevFilePath = '';
 function StoreDataToWebm(data, hashid, ws) {
@@ -16,7 +16,7 @@ function StoreDataToWebm(data, hashid, ws) {
     }
     
     var livePath = filePath+hashid+'/';
-    var t_hms = new Date().getTime();
+    var t_hms = Math.round(new Date().getTime()/1000);
     if (!fs.existsSync(livePath)){
         fs.mkdirSync(livePath);
         prevFilePath = livePath + t_hms + videoFileExtension;
@@ -28,7 +28,7 @@ function StoreDataToWebm(data, hashid, ws) {
         //delete previous file
         // fs.unlinkSync(prevFilePath);
     }
-    broadcast(ws,hashid,t_hms);
+    broadcast(ws,hashid,"live",t_hms);
 
     if (!fs.existsSync(filePath + hashid + videoFileExtension)) {
         console.log('writing original file');
@@ -39,9 +39,9 @@ function StoreDataToWebm(data, hashid, ws) {
         fs.appendFileSync(filePath + hashid + videoFileExtension, data);
     }
 }
-function broadcast(ws,hashid,data){
+function broadcast(ws,hashid,key,data){
     var para = {};
-    para.live = data.toString();
+    para[key] = data.toString();
     // console.log(room[hashid]);
     for(var i in room[hashid]){
         if(room[hashid][i]!= ws){
@@ -74,12 +74,14 @@ module.exports = function (app) {
     app.ws('/', function (ws, req) {
       
         var hashid = uuid();
+        ws.name = hashid;
         console.log('new connection established');
         ws.on('message', function(data) {
             if (data instanceof Buffer) {
                 StoreDataToWebm(data, hashid, ws);
                 if(!room[hashid]){
                     room[hashid] = [ws];
+                    host.push(ws);
                 }
             }else{
                data = JSON.parse(data);
@@ -92,8 +94,14 @@ module.exports = function (app) {
         ws.on('close', function(data) {
             //reload clients' <video> to full video 
             //delete real dir 
-            console.log("close");
-            deleteRealDir(hashid);
+            var checkhost = host.indexOf(ws); 
+            if(checkhost!= -1){
+                var delid = host[checkhost].name;
+                // console.log(host[checkhost].name);
+                broadcast(ws,delid,"end",1);
+                deleteRealDir(delid);
+                delete host[checkhost]; 
+            }
        
         });
         ws.send(hashid);

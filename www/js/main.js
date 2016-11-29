@@ -53,9 +53,10 @@
         connection.binaryType = 'arraybuffer';
         connection.onmessage = function (message) {
             fileName = message.data;
-            fileLocation = 'http://localhost:' + port + '/w/'+ fileName;
+            fileLocation = 'http://localhost:' + port + '/w/'+ fileName+"/";
 
         }
+
     };
     function openInNewTab(url) {
         console.log(url);
@@ -73,7 +74,10 @@
     var recButton = document.getElementById('record');
     recButton.addEventListener('click', function (e) {
         if(!IsRecord){
-            recorder.start(1000);
+          
+            recorder.start(5000);
+
+           
             IsRecord = true;
             recButton.innerHTML = "Stop recording";
             $("#record").removeClass("btn-primary").addClass("btn-danger");
