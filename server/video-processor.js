@@ -19,16 +19,18 @@ function StoreDataToWebm(data, hashid, ws) {
     var t_hms = Math.round(new Date().getTime()/1000);
     if (!fs.existsSync(livePath)){
         fs.mkdirSync(livePath);
-        prevFilePath = livePath + t_hms + videoFileExtension;
+        prevFilePath = livePath + "meta" + videoFileExtension;
         fs.writeFileSync(prevFilePath, data);
+        broadcast(ws,hashid,"live","meta");
     }else{
       
         prevFilePath = livePath + t_hms + videoFileExtension;
         fs.writeFileSync(prevFilePath, data);
         //delete previous file
         // fs.unlinkSync(prevFilePath);
+        broadcast(ws,hashid,"live",t_hms);
     }
-    broadcast(ws,hashid,"live",t_hms);
+
 
     if (!fs.existsSync(filePath + hashid + videoFileExtension)) {
         console.log('writing original file');
@@ -46,7 +48,12 @@ function broadcast(ws,hashid,key,data){
     for(var i in room[hashid]){
         if(room[hashid][i]!= ws){
             console.log("client"+room[hashid][i]);
-            room[hashid][i].send(JSON.stringify(para));
+            try {
+                room[hashid][i].send(JSON.stringify(para));
+            }catch(e){
+                room[hashid][i].close();
+                delete room[hashid][i];
+            }
         }
     }
 }

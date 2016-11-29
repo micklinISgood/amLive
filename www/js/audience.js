@@ -1,5 +1,32 @@
+
 var Chat = {},token;
 Chat.socket = null;
+var sourceBuffer = null, ms;
+
+function hasMediaSource() {
+  return !!(window.MediaSource || window.WebKitMediaSource);
+}
+
+function sourceOpen () {
+  // console.log(this.readyState); // open
+  var vid = document.getElementById("watch_video");
+  // vid.src = window.URL.createObjectURL(ms);
+  var mediaSource = this;
+  sourceBuffer = mediaSource.addSourceBuffer('video/webm; codecs="vorbis,vp8"');
+  meta_location =  head+"meta.webm";
+  getChunkByURL(meta_location, function (buf) {
+       
+          sourceBuffer.appendBuffer(buf);
+  
+  });
+  sourceBuffer.addEventListener('updateend', function () {
+        // mediaSource.endOfStream();
+        vid.play();
+        //console.log(mediaSource.readyState); // ended
+  });
+  
+};
+
 var head = window.location.toString();
 if (head[head.length-1]!="/"){
 	head = head+"/";
@@ -18,6 +45,22 @@ Chat.connect = (function(host) {
          var subscription ={};
          subscription.join = token;
          Chat.sendMessage(JSON.stringify(subscription));
+        
+     
+        if (hasMediaSource()) {
+        window.MediaSource = window.MediaSource || window.WebKitMediaSource;
+        ms = new MediaSource;
+        console.log(ms);
+        // ms.addEventListener('webkitsourceopen', onSourceOpen.bind(ms), false);
+        // console.log(vid);
+        var video = document.getElementById("watch_video");
+        video.src = URL.createObjectURL(ms);
+        ms.addEventListener('sourceopen', sourceOpen);
+
+        } else {
+        alert("Bummer. Your browser doesn't support the MediaSource API!");
+        }
+
  
     };
 
@@ -37,10 +80,16 @@ Chat.connect = (function(host) {
             if (action["live"]){
                 //replace video src here
                 // console.log(action["live"]);
-                var vid = document.getElementById("watch_video");
+                // var vid = document.getElementById("watch_video");
                 src_location =  head+action["live"]+".webm";
                 console.log(src_location);
-                vid.setAttribute('src', src_location);
+                // console.log(sourceBuffer);
+                getChunkByURL(src_location, function (buf) {
+       
+                    sourceBuffer.appendBuffer(buf);
+  
+               });
+                // vid.setAttribute('src', src_location);
             }
             if(action["end"]){
                 var vid = document.getElementById("watch_video");
@@ -48,6 +97,7 @@ Chat.connect = (function(host) {
                 src_location =  full+".webm";
                 console.log(src_location);
                 vid.setAttribute('src', src_location);
+                ms.endOfStream();
             }
         }catch(err) {
             console.log(err);
@@ -80,4 +130,17 @@ Chat.sendMessage = (function(message) {
         Chat.socket.send(message);
  
 });
+function getChunkByURL (url, cb) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.responseType = 'arraybuffer';
+    // xhr.setRequestHeader('Range', 'bytes=0-500'); // Request first 500 bytes of the video.
+    xhr.onload = function(e) {
+        cb(xhr.response);
+       //  var WebMChunk = new Uint8Array(e.target.result);
+       // sourceBuffer.append(WebMChunk);
+    }
+    xhr.send();
+}
+
 Chat.initialize();
