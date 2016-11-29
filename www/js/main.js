@@ -75,7 +75,7 @@
     recButton.addEventListener('click', function (e) {
         if(!IsRecord){
           
-            recorder.start(5000);
+            recorder.start(1000);
 
            
             IsRecord = true;

@@ -24,28 +24,34 @@ Chat.connect = (function(host) {
     Chat.socket.onclose = function () {
     	
     	Chat.socket = null;
-      setTimeout(function() {
-        Chat.initialize();
-      },60000);
+    //   setTimeout(function() {
+    //     Chat.initialize();
+    //   },60000);
     };
 
     Chat.socket.onmessage = function (message) {
     	// console.log(message.data);
-    	var action = JSON.parse(message.data);
-    	if (action["live"]){
-    		//replace video src here
-    		// console.log(action["live"]);
-    		var vid = document.getElementById("watch_video");
-    		src_location =  head+action["live"]+".webm";
-    		console.log(src_location);
-            vid.setAttribute('src', src_location);
-    	}
-        if(action["end"]){
-            var vid = document.getElementById("watch_video");
-            var full = head.substring(0,head.length-1);
-            src_location =  full+".webm";
-            console.log(src_location);
-            vid.setAttribute('src', src_location);
+
+      try {
+            var action = JSON.parse(message.data);
+            if (action["live"]){
+                //replace video src here
+                // console.log(action["live"]);
+                var vid = document.getElementById("watch_video");
+                src_location =  head+action["live"]+".webm";
+                console.log(src_location);
+                vid.setAttribute('src', src_location);
+            }
+            if(action["end"]){
+                var vid = document.getElementById("watch_video");
+                var full = head.substring(0,head.length-1);
+                src_location =  full+".webm";
+                console.log(src_location);
+                vid.setAttribute('src', src_location);
+            }
+        }catch(err) {
+            console.log(err);
+            // Chat.initialize();
         }
     
         return false;

@@ -101,6 +101,7 @@ module.exports = function (app) {
                 broadcast(ws,delid,"end",1);
                 deleteRealDir(delid);
                 delete host[checkhost]; 
+                delete room[delid];
             }
        
         });
