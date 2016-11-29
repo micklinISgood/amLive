@@ -14,6 +14,9 @@ function sourceOpen () {
   // // vid.src = window.URL.createObjectURL(ms);
 
   sourceBuffer = ms.addSourceBuffer('video/webm; codecs="vorbis,vp8"');
+  sourceBuffer.mode = 'sequence';
+  //sourceBuffer.timestampOffset = 2.5;
+
   var full = head.substring(0,head.length-1);
 
   meta_location =  head+"meta.webm";
@@ -29,7 +32,10 @@ function sourceOpen () {
   var vid = document.getElementById("watch_video");
   // vid.src = URL.createObjectURL(ms);
   vid.addEventListener('canplay', function () {
-        vid.play();
+        if(ms.duration > 10){
+          vid.play();
+        }
+        console.log(ms.duration);
   });
 
   init = true;
@@ -42,12 +48,12 @@ function liveappend (url) {
         // vid.addEventListener('canplay', function () {
         //     vid.play();
         // });
-        // var vid = document.getElementById("watch_video");
-        // vid.addEventListener('canplay', function () {
-        //     if(vid.paused == true){
-        //         vid.play();
-        //     }
-        // });
+         var vid = document.getElementById("watch_video");
+         vid.addEventListener('canplay', function () {
+             if(vid.paused == true){
+                 vid.play();
+             }
+         });
 
 
   
@@ -116,7 +122,7 @@ Chat.connect = (function(host) {
 
       try {
             var action = JSON.parse(message.data);
-            if (action["live"] && init){
+            if (action["live"]){
                 //replace video src here
                 // console.log(action["live"]);
                 // var vid = document.getElementById("watch_video");
