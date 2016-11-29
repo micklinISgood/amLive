@@ -16,13 +16,17 @@ function sourceOpen () {
   var full = head.substring(0,head.length-1);
 
   meta_location =  head+"meta.webm";
+  console.log(sourceBuffer);
+  console.log(ms.activeSourceBuffers);
 
   // meta_location = full+".webm";
   getChunkByURL(meta_location, appendSegment);
   // vid.addEventListener('canplay', function () {
   //       vid.play();
   // });
+
   var vid = document.getElementById("watch_video");
+  // vid.src = URL.createObjectURL(ms);
   vid.addEventListener('canplay', function () {
         vid.play();
   });
@@ -50,7 +54,14 @@ function liveappend (url) {
 
 function appendSegment (chunk) {
         console.log(chunk);
+
+        console.log(ms.duration);
+        // console.log(ms.activeSourceBuffers.SourceBuffer());
         sourceBuffer.appendBuffer(chunk);
+        console.log(ms.activeSourceBuffers);
+        console.log(ms.duration);
+        console.log(ms.sourceBuffers);
+        // console.log(sourceBuffer.buffered);
      
 };
 
@@ -126,6 +137,7 @@ Chat.connect = (function(host) {
             }
         }catch(err) {
             console.log(err);
+            console.log(message);
             // Chat.initialize();
         }
     
