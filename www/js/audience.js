@@ -49,6 +49,7 @@ function liveappend (url) {
 };
 
 function appendSegment (chunk) {
+        console.log(chunk);
         sourceBuffer.appendBuffer(chunk);
      
 };

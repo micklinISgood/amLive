@@ -4,7 +4,7 @@
     var fileName;
     var connection;
     var fileLocation;
-    var IsRecord = false;
+    var AbleToRecord = true;
     var port = 5566;
 
     function getVideoStream() {
@@ -43,7 +43,9 @@
         var reader = new FileReader();
         reader.readAsArrayBuffer(event.data);
         reader.onloadend = function (event) {
-            connection.send(reader.result);
+            if(AbleToRecord){
+                connection.send(reader.result);
+            }
         };
     };
 
@@ -54,6 +56,26 @@
         connection.onmessage = function (message) {
             fileName = message.data;
             fileLocation = 'http://localhost:' + port + '/w/'+ fileName;
+
+            var recButton = document.getElementById('record');
+            recButton.innerHTML = "Stop recording";
+            $("#record").removeClass("btn-primary").addClass("btn-danger");
+
+            $('#share').show();
+            $('#share').html('<p> Now live on: </p><a onclick="window.open(\''+fileLocation+"/"+'\');"style="color:#d6d6f5;">'+fileLocation+'</a>');
+            AbleToRecord = true;
+
+        }
+        connection.onclose = function () {
+            AbleToRecord = true;
+           
+
+
+        }
+        connection.onopen = function () {
+            
+            recorder.start(1000);
+
 
         }
 
@@ -73,35 +95,34 @@
 
     var recButton = document.getElementById('record');
     recButton.addEventListener('click', function (e) {
-        if(!IsRecord){
-            recorder.start(1000);
+        if(AbleToRecord){
+            if(recButton.innerHTML == "Start recording"){
+                getWebSocket();
+                AbleToRecord = false;
 
-           
-            IsRecord = true;
-            recButton.innerHTML = "Stop recording";
-            $("#record").removeClass("btn-primary").addClass("btn-danger");
 
-            $('#share').show();
-            $('#share').html('Now live on: <br/><a onclick="window.open(\''+fileLocation+"/"+'\');"style="color:#d6d6f5;">'+fileLocation+'</a>');
-         
-        }else{
-            connection.close();
-            $('#share').html('Lived on: <br/><a onclick="window.open(\''+fileLocation+'\');" style="color:#d6d6f5;">'+fileLocation+'</a>');
-            // $('#share').hide();
-            recorder.stop();
+            }else{
+                AbleToRecord = false;
+                recorder.stop();
+                connection.close();
 
-            //updateVideoFile();
-            $("#record").removeClass("btn-danger").addClass("btn-primary");
-        
-            IsRecord = false;
-            recButton.innerHTML = "Start recording";
-            getWebSocket();
+                $('#share').html('<p style="color:#d6d6f5;">Lived on: </p><a onclick="window.open(\''+fileLocation+'\');" style="color:#ffffff;">'+fileLocation+'</a>');
+                // $('#share').hide();
+
+
+                //updateVideoFile();
+                $("#record").removeClass("btn-danger").addClass("btn-primary");
+            
+
+                recButton.innerHTML = "Start recording";
+
+            }
         }
     });
  
 
     getVideoStream();
-    getWebSocket();
+
 
    
 })();
