@@ -16,7 +16,7 @@ function StoreDataToWebm(data, hashid, ws) {
     }
     
     var livePath = filePath+hashid+'/';
-    var t_hms = Math.round(new Date().getTime()/1000);
+    var t_hms = new Date().getTime();
     if (!fs.existsSync(livePath)){
         fs.mkdirSync(livePath);
         prevFilePath = livePath + "meta" + videoFileExtension;

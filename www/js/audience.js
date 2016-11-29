@@ -4,6 +4,9 @@ Chat.socket = null;
 var sourceBuffer = null, ms;
 var init = false;
 
+$('#live_url').html('<p> Lecture Live Streaming!</p><a onclick="window.open(\''+"http://"+window.location.host+'\');"style="color:#d6d6f5;"><h3>Live yours Lecture Now<h3></a>');
+
+
 function hasMediaSource() {
   return !!(window.MediaSource || window.WebKitMediaSource);
 }
@@ -32,10 +35,9 @@ function sourceOpen () {
   var vid = document.getElementById("watch_video");
   // vid.src = URL.createObjectURL(ms);
   vid.addEventListener('canplay', function () {
-        if(ms.duration > 10){
+        
           vid.play();
-        }
-        console.log(ms.duration);
+     
   });
 
   init = true;
@@ -60,14 +62,14 @@ function liveappend (url) {
 };
 
 function appendSegment (chunk) {
-        console.log(chunk);
+        // console.log(chunk);
 
-        console.log(ms.duration);
+        // console.log(ms.duration);
         // console.log(ms.activeSourceBuffers.SourceBuffer());
         sourceBuffer.appendBuffer(chunk);
-        console.log(ms.activeSourceBuffers);
-        console.log(ms.duration);
-        console.log(ms.sourceBuffers);
+        // console.log(ms.activeSourceBuffers);
+        // console.log(ms.duration);
+        // console.log(ms.sourceBuffers);
         // console.log(sourceBuffer.buffered);
      
 };
@@ -175,17 +177,15 @@ Chat.sendMessage = (function(message) {
  
 });
 function getChunkByURL (url, cb) {
-    console.log(url); 
+    // console.log(url); 
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
     xhr.responseType = 'arraybuffer';
     // xhr.setRequestHeader('Range', 'bytes=0-500'); // Request first 500 bytes of the video.
     xhr.onload = function(e) {
-        cb(xhr.response);
-        if (xhr.status != 200){
-            setTimeout(function() {
-                getChunkByURL(url, appendSegment);
-             },1000);
+
+        if (xhr.status == 200){
+           cb(xhr.response);
         }
        //  var WebMChunk = new Uint8Array(e.target.result);
        // sourceBuffer.append(WebMChunk);
