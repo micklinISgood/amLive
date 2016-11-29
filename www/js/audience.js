@@ -8,24 +8,42 @@ function hasMediaSource() {
 }
 
 function sourceOpen () {
-  // console.log(this.readyState); // open
+  console.log(this); // open
   var vid = document.getElementById("watch_video");
   // vid.src = window.URL.createObjectURL(ms);
-  var mediaSource = this;
-  sourceBuffer = mediaSource.addSourceBuffer('video/webm; codecs="vorbis,vp8"');
+
+  sourceBuffer = ms.addSourceBuffer('video/webm; codecs="vorbis,vp8"');
   meta_location =  head+"meta.webm";
   getChunkByURL(meta_location, function (buf) {
+
+         // sourceBuffer.addEventListener('updateend', function () {
+         //    // mediaSource.endOfStream();
+         //    vid.play();
+         //    //console.log(mediaSource.readyState); // ended
+         //  });
        
           sourceBuffer.appendBuffer(buf);
+          vid.play();
   
   });
-  sourceBuffer.addEventListener('updateend', function () {
-        // mediaSource.endOfStream();
-        vid.play();
-        //console.log(mediaSource.readyState); // ended
-  });
+
   
 };
+function liveappend (url) {
+  // console.log(this.readyState); // open
+       var vid = document.getElementById("watch_video");
+     
+
+        getChunkByURL(url, function (buf) {
+       
+            sourceBuffer.appendBuffer(buf);
+       
+
+       });
+
+  
+};
+
 
 var head = window.location.toString();
 if (head[head.length-1]!="/"){
@@ -50,7 +68,7 @@ Chat.connect = (function(host) {
         if (hasMediaSource()) {
         window.MediaSource = window.MediaSource || window.WebKitMediaSource;
         ms = new MediaSource;
-        console.log(ms);
+        // console.log(ms);
         // ms.addEventListener('webkitsourceopen', onSourceOpen.bind(ms), false);
         // console.log(vid);
         var video = document.getElementById("watch_video");
@@ -58,7 +76,7 @@ Chat.connect = (function(host) {
         ms.addEventListener('sourceopen', sourceOpen);
 
         } else {
-        alert("Bummer. Your browser doesn't support the MediaSource API!");
+            alert("Bummer. Your browser doesn't support the MediaSource API!");
         }
 
  
@@ -82,13 +100,10 @@ Chat.connect = (function(host) {
                 // console.log(action["live"]);
                 // var vid = document.getElementById("watch_video");
                 src_location =  head+action["live"]+".webm";
-                console.log(src_location);
-                // console.log(sourceBuffer);
-                getChunkByURL(src_location, function (buf) {
-       
-                    sourceBuffer.appendBuffer(buf);
-  
-               });
+                // console.log(src_location);
+                console.log(ms);
+                ms.addEventListener('sourceopen', liveappend(src_location));
+         
                 // vid.setAttribute('src', src_location);
             }
             if(action["end"]){

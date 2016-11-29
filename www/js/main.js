@@ -88,6 +88,8 @@
         }else{
             $('#share').html('Lived on: <br/><a onclick="window.open(\''+fileLocation+'\');" style="color:#d6d6f5;">'+fileLocation+'</a>');
             recorder.stop();
+            connection.close();
+            getWebSocket();
             //updateVideoFile();
             $("#record").removeClass("btn-danger").addClass("btn-primary");
         
