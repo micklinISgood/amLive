@@ -2,6 +2,7 @@
 var Chat = {},token;
 Chat.socket = null;
 var sourceBuffer = null, ms;
+var init = false;
 
 function hasMediaSource() {
   return !!(window.MediaSource || window.WebKitMediaSource);
@@ -31,7 +32,7 @@ function sourceOpen () {
         vid.play();
   });
 
-
+  init = true;
   
 };
 function liveappend (url) {
@@ -115,7 +116,7 @@ Chat.connect = (function(host) {
 
       try {
             var action = JSON.parse(message.data);
-            if (action["live"]){
+            if (action["live"] && init){
                 //replace video src here
                 // console.log(action["live"]);
                 // var vid = document.getElementById("watch_video");
@@ -175,6 +176,11 @@ function getChunkByURL (url, cb) {
     // xhr.setRequestHeader('Range', 'bytes=0-500'); // Request first 500 bytes of the video.
     xhr.onload = function(e) {
         cb(xhr.response);
+        if (xhr.status != 200){
+            setTimeout(function() {
+                getChunkByURL(url, appendSegment);
+             },1000);
+        }
        //  var WebMChunk = new Uint8Array(e.target.result);
        // sourceBuffer.append(WebMChunk);
     }
