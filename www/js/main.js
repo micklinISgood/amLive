@@ -53,7 +53,7 @@
         connection.binaryType = 'arraybuffer';
         connection.onmessage = function (message) {
             fileName = message.data;
-            fileLocation = 'http://localhost:' + port + '/w/'+ fileName+"/";
+            fileLocation = 'http://localhost:' + port + '/w/'+ fileName;
 
         }
 
@@ -82,12 +82,12 @@
             $("#record").removeClass("btn-primary").addClass("btn-danger");
 
             $('#share').show();
-            $('#share').html('Now live on: <br/><a onclick="window.open(\''+fileLocation+'\');"style="color:#d6d6f5;">'+fileLocation+'</a>');
+            $('#share').html('Now live on: <br/><a onclick="window.open(\''+fileLocation+"/"+'\');"style="color:#d6d6f5;">'+fileLocation+'</a>');
          
         }else{
             connection.close();
-            // $('#share').html('Lived on: <br/><a onclick="window.open(\''+fileLocation+'\');" style="color:#d6d6f5;">'+fileLocation+'</a>');
-            $('#share').hide();
+            $('#share').html('Lived on: <br/><a onclick="window.open(\''+fileLocation+'\');" style="color:#d6d6f5;">'+fileLocation+'</a>');
+            // $('#share').hide();
             recorder.stop();
 
             //updateVideoFile();

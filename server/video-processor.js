@@ -94,6 +94,10 @@ module.exports = function (app) {
                data = JSON.parse(data);
                if(data["join"] && room[data["join"]]){
                     room[data["join"]].push(ws);
+               }else if(data["join"] && !room[data["join"]]){
+                    var para = {};
+                    para["end"]=1;
+                    ws.send(JSON.stringify(para));
                }
             }
             // console.log(room);

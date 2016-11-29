@@ -8,7 +8,7 @@ function hasMediaSource() {
 }
 
 function sourceOpen () {
-  console.log(this); // open
+  // console.log(this); // open
   var vid = document.getElementById("watch_video");
   // vid.src = window.URL.createObjectURL(ms);
 
@@ -22,6 +22,7 @@ function sourceOpen () {
          //    //console.log(mediaSource.readyState); // ended
          //  });
        
+          // var WebMChunk = new Uint8Array(buf);
           sourceBuffer.appendBuffer(buf);
           vid.play();
   
@@ -30,13 +31,14 @@ function sourceOpen () {
   
 };
 function liveappend (url) {
-  // console.log(this.readyState); // open
+       console.log(url); // open
        var vid = document.getElementById("watch_video");
      
 
         getChunkByURL(url, function (buf) {
        
-            sourceBuffer.appendBuffer(buf);
+            var WebMChunk = new Uint8Array(buf);
+            sourceBuffer.appendBuffer(WebMChunk);
        
 
        });
