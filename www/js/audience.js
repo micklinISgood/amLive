@@ -9,43 +9,49 @@ function hasMediaSource() {
 
 function sourceOpen () {
   // console.log(this); // open
-  var vid = document.getElementById("watch_video");
-  // vid.src = window.URL.createObjectURL(ms);
+  // var vid = document.getElementById("watch_video");
+  // // vid.src = window.URL.createObjectURL(ms);
 
   sourceBuffer = ms.addSourceBuffer('video/webm; codecs="vorbis,vp8"');
-  meta_location =  head+"meta.webm";
-  getChunkByURL(meta_location, function (buf) {
+  var full = head.substring(0,head.length-1);
 
-         // sourceBuffer.addEventListener('updateend', function () {
-         //    // mediaSource.endOfStream();
-         //    vid.play();
-         //    //console.log(mediaSource.readyState); // ended
-         //  });
-       
-          // var WebMChunk = new Uint8Array(buf);
-          sourceBuffer.appendBuffer(buf);
-          vid.play();
-  
+  meta_location =  head+"meta.webm";
+
+  // meta_location = full+".webm";
+  getChunkByURL(meta_location, appendSegment);
+  // vid.addEventListener('canplay', function () {
+  //       vid.play();
+  // });
+  var vid = document.getElementById("watch_video");
+  vid.addEventListener('canplay', function () {
+        vid.play();
   });
+
 
   
 };
 function liveappend (url) {
-       console.log(url); // open
-       var vid = document.getElementById("watch_video");
-     
+      // open
 
-        getChunkByURL(url, function (buf) {
-       
-            var WebMChunk = new Uint8Array(buf);
-            sourceBuffer.appendBuffer(WebMChunk);
-       
+        getChunkByURL(url, appendSegment);
+        // vid.addEventListener('canplay', function () {
+        //     vid.play();
+        // });
+        // var vid = document.getElementById("watch_video");
+        // vid.addEventListener('canplay', function () {
+        //     if(vid.paused == true){
+        //         vid.play();
+        //     }
+        // });
 
-       });
 
   
 };
 
+function appendSegment (chunk) {
+        sourceBuffer.appendBuffer(chunk);
+     
+};
 
 var head = window.location.toString();
 if (head[head.length-1]!="/"){
@@ -103,8 +109,9 @@ Chat.connect = (function(host) {
                 // var vid = document.getElementById("watch_video");
                 src_location =  head+action["live"]+".webm";
                 // console.log(src_location);
-                console.log(ms);
-                ms.addEventListener('sourceopen', liveappend(src_location));
+                // console.log(ms);
+                // ms.addEventListener('sourceopen',  liveappend(src_location));
+                liveappend(src_location);
          
                 // vid.setAttribute('src', src_location);
             }
@@ -114,7 +121,7 @@ Chat.connect = (function(host) {
                 src_location =  full+".webm";
                 console.log(src_location);
                 vid.setAttribute('src', src_location);
-                ms.endOfStream();
+                // ms.endOfStream();
             }
         }catch(err) {
             console.log(err);
@@ -148,6 +155,7 @@ Chat.sendMessage = (function(message) {
  
 });
 function getChunkByURL (url, cb) {
+    console.log(url); 
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
     xhr.responseType = 'arraybuffer';
