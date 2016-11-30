@@ -127,9 +127,10 @@ module.exports = function (app) {
                if(data["join"] && room[data["join"]]){
                     room[data["join"]].push(ws);
                }else if(data["join"] && !room[data["join"]]){
-                    var para = {};
-                    para["end"]=1;
-                    ws.send(JSON.stringify(para));
+                    // var para = {};
+                    // para["end"]=1;
+                    // ws.send(JSON.stringify(para));
+                    ws.close();
                }
             }
             // console.log(room);

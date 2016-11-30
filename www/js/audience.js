@@ -28,12 +28,9 @@ function sourceOpen () {
 
   // meta_location = full+".webm";
   getChunkByURL(meta_location, appendSegment);
-  // vid.addEventListener('canplay', function () {
-  //       vid.play();
-  // });
+
 
   var vid = document.getElementById("watch_video");
-  // vid.src = URL.createObjectURL(ms);
   vid.addEventListener('canplay', function () {
         
           vid.play();
@@ -47,9 +44,7 @@ function liveappend (url) {
       // open
 
         getChunkByURL(url, appendSegment);
-        // vid.addEventListener('canplay', function () {
-        //     vid.play();
-        // });
+ 
          var vid = document.getElementById("watch_video");
          vid.addEventListener('canplay', function () {
        
@@ -62,15 +57,8 @@ function liveappend (url) {
 };
 
 function appendSegment (chunk) {
-        // console.log(chunk);
 
-        // console.log(ms.duration);
-        // console.log(ms.activeSourceBuffers.SourceBuffer());
         sourceBuffer.appendBuffer(chunk);
-        // console.log(ms.activeSourceBuffers);
-        // console.log(ms.duration);
-        // console.log(ms.sourceBuffers);
-        // console.log(sourceBuffer.buffered);
      
 };
 
@@ -96,15 +84,13 @@ Chat.connect = (function(host) {
         
      
         if (hasMediaSource()) {
-        window.MediaSource = window.MediaSource || window.WebKitMediaSource;
-        ms = new MediaSource;
-        // console.log(ms);
-        // ms.addEventListener('webkitsourceopen', onSourceOpen.bind(ms), false);
-        // console.log(vid);
-        var video = document.getElementById("watch_video");
-        video.src = URL.createObjectURL(ms);
-        ms.addEventListener('sourceopen', sourceOpen);
-        Chat.socket.binaryType = 'arraybuffer';
+
+          window.MediaSource = window.MediaSource || window.WebKitMediaSource;
+          ms = new MediaSource;
+          var video = document.getElementById("watch_video");
+          video.src = URL.createObjectURL(ms);
+          ms.addEventListener('sourceopen', sourceOpen);
+          Chat.socket.binaryType = 'arraybuffer';
 
         } else {
             alert("Bummer. Your browser doesn't support the MediaSource API!");
@@ -119,6 +105,7 @@ Chat.connect = (function(host) {
       src_location =  full+".webm";
       console.log(src_location);
       vid.setAttribute('src', src_location);
+      vid.play();
     	
     	Chat.socket = null;
     //   setTimeout(function() {
@@ -183,7 +170,7 @@ Chat.sendMessage = (function(message) {
  
 });
 function getChunkByURL (url, cb) {
-    console.log(url); 
+    // console.log(url); 
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
     xhr.responseType = 'arraybuffer';
