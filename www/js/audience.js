@@ -87,6 +87,7 @@ Chat.connect = (function(host) {
         console.log('Error: WebSocket is not supported by this browser.');
         return;
     }
+
     Chat.socket.onopen = function () {
          // console.log('Info: WebSocket connection opened.');
          var subscription ={};
@@ -103,6 +104,7 @@ Chat.connect = (function(host) {
         var video = document.getElementById("watch_video");
         video.src = URL.createObjectURL(ms);
         ms.addEventListener('sourceopen', sourceOpen);
+        Chat.socket.binaryType = 'arraybuffer';
 
         } else {
             alert("Bummer. Your browser doesn't support the MediaSource API!");
@@ -112,6 +114,11 @@ Chat.connect = (function(host) {
     };
 
     Chat.socket.onclose = function () {
+      var vid = document.getElementById("watch_video");
+      var full = head.substring(0,head.length-1);
+      src_location =  full+".webm";
+      console.log(src_location);
+      vid.setAttribute('src', src_location);
     	
     	Chat.socket = null;
     //   setTimeout(function() {
@@ -123,27 +130,26 @@ Chat.connect = (function(host) {
     	// console.log(message.data);
 
       try {
-            var action = JSON.parse(message.data);
-            if (action["live"] && init){
-                //replace video src here
-                // console.log(action["live"]);
-                // var vid = document.getElementById("watch_video");
-                src_location =  head+action["live"]+".webm";
-                // console.log(src_location);
-                // console.log(ms);
-                // ms.addEventListener('sourceopen',  liveappend(src_location));
-                liveappend(src_location);
+            // console.log(message.data instanceof Buffer);
+            sourceBuffer.appendBuffer(message.data);
+            // var action = JSON.parse(message.data);
+            // if (action["live"] && init){
+            //     //replace video src here
+            //     // console.log(action["live"]);
+            //     // var vid = document.getElementById("watch_video");
+            //     sourceBuffer.appendBuffer(action["live"]);
+            //     // src_location =  head+action["live"]+".webm";
+            //     // // console.log(src_location);
+            //     // // console.log(ms);
+            //     // // ms.addEventListener('sourceopen',  liveappend(src_location));
+            //     // liveappend(src_location);
          
-                // vid.setAttribute('src', src_location);
-            }
-            if(action["end"]){
-                var vid = document.getElementById("watch_video");
-                var full = head.substring(0,head.length-1);
-                src_location =  full+".webm";
-                console.log(src_location);
-                vid.setAttribute('src', src_location);
-                // ms.endOfStream();
-            }
+            //     // vid.setAttribute('src', src_location);
+            // }
+            // if(action["end"]){
+           
+            //     // ms.endOfStream();
+            // }
         }catch(err) {
             console.log(err);
             console.log(message);

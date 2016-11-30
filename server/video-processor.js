@@ -9,6 +9,7 @@ var videoFileExtension = '.webm';
 var host = [];
 var room = {};
 var prevFilePath = '';
+
 function StoreDataToWebm(data, hashid, ws) {
     var filePath = '../www/w/';
     if (!fs.existsSync(filePath)){
@@ -18,17 +19,18 @@ function StoreDataToWebm(data, hashid, ws) {
     var livePath = filePath+hashid+'/';
     var t_hms = new Date().getTime();
     if (!fs.existsSync(livePath)){
+        console.log('writing meta file');
         fs.mkdirSync(livePath);
         prevFilePath = livePath + "meta" + videoFileExtension;
         fs.writeFileSync(prevFilePath, data);
-        broadcast(ws,hashid,"live","meta");
+
     }else{
       
-        prevFilePath = livePath + t_hms + videoFileExtension;
-        fs.writeFileSync(prevFilePath, data);
+        // prevFilePath = livePath + t_hms + videoFileExtension;
+        // fs.writeFileSync(prevFilePath, data);
         //delete previous file
         // fs.unlinkSync(prevFilePath);
-        broadcast(ws,hashid,"live",t_hms);
+        broadcast_binary(ws,hashid,data);
     }
 
 
@@ -37,8 +39,24 @@ function StoreDataToWebm(data, hashid, ws) {
         ws.send(hashid);
         fs.writeFileSync(filePath + hashid + videoFileExtension, data);
     } else {
-        console.log('appending File')
+        // console.log('appending File')
         fs.appendFileSync(filePath + hashid + videoFileExtension, data);
+    }
+}
+function broadcast_binary(ws,hashid,data){
+    // var para = {};
+    // para[key] = data.toString();
+    // console.log(room[hashid]);
+    for(var i in room[hashid]){
+        if(room[hashid][i]!= ws){
+            // console.log("client"+room[hashid][i]);
+            try {
+                room[hashid][i].send(data);
+            }catch(e){
+                room[hashid][i].close();
+                delete room[hashid][i];
+            }
+        }
     }
 }
 function broadcast(ws,hashid,key,data){
@@ -77,6 +95,20 @@ var deleteFolderRecursive = function(path) {
     fs.rmdirSync(path);
   }
 };
+
+function close_subscriptions(ws,hashid){
+
+    for(var i in room[hashid]){
+        if(room[hashid][i]!= ws){
+            console.log("client"+room[hashid][i]);
+            try {
+                room[hashid][i].close();
+            }catch(e){
+                room[hashid][i].close();
+            }
+        }
+    }
+}
 module.exports = function (app) {
     app.ws('/', function (ws, req) {
       
@@ -112,6 +144,7 @@ module.exports = function (app) {
                 broadcast(ws,delid,"end",1);
                 deleteRealDir(delid);
                 delete host[checkhost]; 
+                close_subscriptions(ws,delid);
                 delete room[delid];
             }
        
