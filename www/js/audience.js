@@ -52,9 +52,9 @@ function liveappend (url) {
         // });
          var vid = document.getElementById("watch_video");
          vid.addEventListener('canplay', function () {
-             if(vid.paused == true){
+       
                  vid.play();
-             }
+             
          });
 
 
@@ -124,7 +124,7 @@ Chat.connect = (function(host) {
 
       try {
             var action = JSON.parse(message.data);
-            if (action["live"]){
+            if (action["live"] && init){
                 //replace video src here
                 // console.log(action["live"]);
                 // var vid = document.getElementById("watch_video");
@@ -177,7 +177,7 @@ Chat.sendMessage = (function(message) {
  
 });
 function getChunkByURL (url, cb) {
-    // console.log(url); 
+    console.log(url); 
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
     xhr.responseType = 'arraybuffer';

@@ -8,7 +8,7 @@
     <title>Lecture Live Streaming!</title>
   </head>
   <body>
-    <center><h1>Lecture Live Streaming!</h1><div id="live_url" ></div>
+    <center><h1>Lecture Live Streaming!</h1><div id="live_url" ></div><div id="timecode" style="color:#7f858e;">not started</div>
     <br><video id="watch_video" controls></center>
       <source src="<%= name %>.webm" type="video/webm">
     </video>
@@ -16,10 +16,10 @@
       var watchVideo = document.getElementById('watch_video');
       var timeDiv = document.getElementById('timecode');
       var statusDiv = document.getElementById('status');
-      watchVideo.ontimeupdate = function() {
-         timeDiv.innerHTML = 'time:' + watchVideo.currentTime + ' sec, buffered(' + watchVideo.buffered.start(0) + ' - ' + watchVideo.buffered.end(0) + ')';
+       watchVideo.ontimeupdate = function() {
+         timeDiv.innerHTML = 'time:' + watchVideo.currentTime + ' sec';
         };
-      watchVideo.onwaiting = function() {
+      /*watchVideo.onwaiting = function() {
          statusDiv.innerHTML = 'waiting..';
         };
       watchVideo.onplaying = function() {
@@ -28,7 +28,7 @@
       watchVideo.onended = function() {
          statusDiv.innerHTML = '..end';
         };
-      /* watchVideo.oncanplay = function() {
+       watchVideo.oncanplay = function() {
          alert("Can start playing video");
         };*/
     </script>

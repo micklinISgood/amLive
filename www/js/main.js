@@ -15,6 +15,7 @@
  
 
     function handleError(error) {
+        AbleToRecord = false;
         console.log('Cannot get user video', error);
         var error =document.getElementById('error');
         $('#error').show();
@@ -74,7 +75,7 @@
         }
         connection.onopen = function () {
             
-            recorder.start(250);
+            recorder.start(300);
 
 
         }
