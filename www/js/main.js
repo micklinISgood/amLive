@@ -63,7 +63,7 @@
         connection.binaryType = 'arraybuffer';
         connection.onmessage = function (message) {
             fileName = message.data;
-            fileLocation = 'https://localhost:' + port + '/w/'+ fileName;
+            fileLocation = 'https://' + window.location.host + '/w/'+ fileName;
 
             var recButton = document.getElementById('record');
             recButton.innerHTML = "Stop recording";

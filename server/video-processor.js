@@ -109,7 +109,7 @@ function close_subscriptions(ws,hashid){
     }
 }
 module.exports = function (app) {
-    console.log(app.ws)
+    // console.log(app.ws)
     app.ws('/', function (ws, req) {
       
         var hashid = uuid();
