@@ -36,7 +36,6 @@ function StoreDataToWebm(data, hashid, ws) {
 
     if (!fs.existsSync(filePath + hashid + videoFileExtension)) {
         console.log('writing original file');
-        ws.send(hashid);
         fs.writeFileSync(filePath + hashid + videoFileExtension, data);
     } else {
         // console.log('appending File')
