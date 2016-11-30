@@ -51,12 +51,19 @@
     };
 
     function getWebSocket() {
-        var websocketEndpoint = 'ws://localhost:' + port;
-        connection = new WebSocket(websocketEndpoint);
+         if (window.location.protocol == 'http:') {
+            var websocketEndpoint = 'ws://' + window.location.host;
+            connection = new WebSocket(websocketEndpoint);
+         } else {
+            var websocketEndpoint = 'wss://' + window.location.host;
+            connection = new WebSocket(websocketEndpoint);
+        }
+        // var websocketEndpoint = 'ws://localhost:' + port;
+        
         connection.binaryType = 'arraybuffer';
         connection.onmessage = function (message) {
             fileName = message.data;
-            fileLocation = 'http://localhost:' + port + '/w/'+ fileName;
+            fileLocation = 'https://localhost:' + port + '/w/'+ fileName;
 
             var recButton = document.getElementById('record');
             recButton.innerHTML = "Stop recording";
