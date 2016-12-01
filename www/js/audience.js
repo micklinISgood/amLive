@@ -4,7 +4,7 @@ Chat.socket = null;
 var sourceBuffer = null, ms;
 var init = false;
 
-$('#live_url').html('<a onclick="window.open(\''+"https://"+window.location.host+'\');"style="color:#4286f4; text-decoration: underline;"><h3>Live yours Lecture Now<h3></a>');
+$('#live_url').html('<a onclick="window.open(\''+"https://"+window.location.host+'\');"style="color:#4286f4; text-decoration: underline;"><h3>Live your Lecture Now<h3></a>');
 
 
 function hasMediaSource() {
