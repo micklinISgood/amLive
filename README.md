@@ -74,6 +74,7 @@ Client  src:https://github.com/micklinISgood/amLive/blob/master/www/js/audience.
 
 ####7.Clean up after live:
 After a user has done a live, we still keep his video on server. In the beginning, we just broadcasted a signal to clients that the live is off and clients will reset the video src to lived video’s url. However, the websocket connection of a client is still open because we didn’t close those connections on the server side. And this causes the connection leak on the server as long as the client stays on the web page. We noticed this problem because we set the binarytype of the websocket and cannot use json to notify the clients. In the end, the server just simply close the subscription connections to show the live was done. And hence, no more connection leaks.  
+
 Server src:https://github.com/micklinISgood/amLive/blob/master/server/video-processor.js#L145-L149
 
 Client  src:https://github.com/micklinISgood/amLive/blob/master/www/js/audience.js#L102-L114
