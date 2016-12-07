@@ -7,6 +7,11 @@
 4. node index.js
 5. Point your browser to: [http://localhost:5566](http://localhost:5566) 
 
+###Website Snapshot:
+####Demo url: https://104.198.177.73:5566/
+####Deployment Video url: https://www.youtube.com/watch?v=w9pZ_rcmSvg
+![http://localhost:5566](https://github.com/micklinISgood/amLive/blob/master/websnap.png)
+
 ### Architecture diagram:
 ![http://localhost:5566](https://github.com/micklinISgood/amLive/blob/master/live_final.png) 
 
@@ -58,12 +63,9 @@ Server src:https://github.com/micklinISgood/amLive/blob/master/server/video-proc
 Client  src:https://github.com/micklinISgood/amLive/blob/master/www/js/audience.js#L93
 
 
-7.Clean up after live:
-	After a user has done a live, we still keep his video on server. In the beginning, we just broadcasted a signal to clients that the live is off and clients will reset the video src to lived video’s url. However, the websocket connection of a client is still open because we didn’t close those connections on the server side. And this causes the connection leak on the server as long as the client stays on the web page. We noticed this problem because we set the binarytype of the websocket and cannot use json to notify the clients. In the end, the server just simply close the subscription connections to show the live was done. And hence, no more connection leaks.  
+####7.Clean up after live:
+After a user has done a live, we still keep his video on server. In the beginning, we just broadcasted a signal to clients that the live is off and clients will reset the video src to lived video’s url. However, the websocket connection of a client is still open because we didn’t close those connections on the server side. And this causes the connection leak on the server as long as the client stays on the web page. We noticed this problem because we set the binarytype of the websocket and cannot use json to notify the clients. In the end, the server just simply close the subscription connections to show the live was done. And hence, no more connection leaks.  
 Server src:https://github.com/micklinISgood/amLive/blob/master/server/video-processor.js#L145-L149
 Client  src:https://github.com/micklinISgood/amLive/blob/master/www/js/audience.js#L102-L114
 
 
-Website Snapshot:
-Demo url: https://104.198.177.73:5566/
-Video url: https://www.youtube.com/watch?v=w9pZ_rcmSvg
