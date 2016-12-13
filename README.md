@@ -8,7 +8,8 @@
 5. Point your browser to: [http://localhost:5566](http://localhost:5566) 
 
 ###Website Snapshot:
-####Demo url: https://104.198.177.73:5566/
+####[Demo url](https://104.197.212.131:5566/)
+(Referential integrity for hosting may not hold.)
 ####Deployment Video url: https://www.youtube.com/watch?v=w9pZ_rcmSvg
 ![http://localhost:5566](https://github.com/micklinISgood/amLive/blob/master/websnap.png)
 
